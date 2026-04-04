@@ -15,7 +15,7 @@ on:
 #    branches: [ "main" ] # Pipelines get triggered whenever pull request is created .
 
 jobs:
-  build:
+  compile:
 
     runs-on: ubuntu-latest
 
