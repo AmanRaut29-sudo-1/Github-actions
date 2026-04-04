@@ -1,0 +1,25 @@
+Types of runners :- 
+1. GitHub-hosted or shared runners (most common) 
+   GitHub provides ready machines :-   runs-on: ubuntu-latest 
+
+   options :-
+   ubuntu-latest
+   windows-latest
+   macos-latest
+
+ 2. Self-hosted runners :- 
+    You create your own runner (EC2, VM, laptop, server).
+    runs-on: self-hosted
+    When do you use self-hosted runner? 
+
+    -> Deploy to private Kubernetes cluster
+    -> Access internal DB
+    -> Run Terraform in VPC
+    -> Use Docker inside Docker
+    -> Heavy build (16 CPU)
+
+
+
+
+Self hosted runner :-
+-> Setting -> actions -> Runners(select runner you want)
