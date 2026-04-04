@@ -11,8 +11,8 @@ name: CICD pipeline
 on:
   push:
     branches: [ "main" ] # Pipelines get triggered whenever code is pushed .
-  pull_request:
-    branches: [ "main" ] # Pipelines get triggered whenever pull request is created .
+#  pull_request:
+#    branches: [ "main" ] # Pipelines get triggered whenever pull request is created .
 
 jobs:
   build:
