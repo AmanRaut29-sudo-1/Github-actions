@@ -87,6 +87,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Create app directory
+        run: mkdir -p app
+
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
