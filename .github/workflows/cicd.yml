@@ -87,9 +87,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create app directory
-        run: mkdir -p app
-
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
@@ -100,7 +97,7 @@ jobs:
         run: ls -R
 
       - name: Build Docker Image
-        run: docker build  -t bankapp .
+        run: docker build --no-cache  -t bankapp .
 
       - name: Login to DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
