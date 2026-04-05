@@ -98,6 +98,13 @@ jobs:
           name: app-build
           path: target
 
+      - name: Debug files
+        run: |
+          pwd
+          ls -R
+          cat Dockerfile
+
+
       - name: Build Docker Image
         run: docker build -t bankapp .
 
