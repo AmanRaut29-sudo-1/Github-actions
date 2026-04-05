@@ -110,3 +110,12 @@ jobs:
       run: |
         docker tag bankapp Amanrautdocker1/bankapp:latest
         docker push Amanrautdocker1/bankapp:latest
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: docker
+
+    steps:
+    - name: Deploy to Kubernetes
+      run: kubectl apply -f deployment.yaml
