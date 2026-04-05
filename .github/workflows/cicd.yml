@@ -81,41 +81,66 @@ jobs:
           name: app-build
           path: target/*.jar
 
+
   docker:
-    runs-on: ubuntu-latest
-    needs: package
-    steps:
-      - uses: actions/checkout@v4
+  runs-on: ubuntu-latest
+  needs: package
 
-      # IMPORTANT: create app folder
-      - name: Create app directory
-        run: mkdir -p app
+  steps:
+    - uses: actions/checkout@v4
 
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: app-build
-          path: app
+    # create folder expected by Dockerfile
+    - name: Create app directory
+      run: mkdir -p app
 
-      - name: Verify jar
-        run: ls -R
+    # download jar artifact
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: app-build
+        path: app
 
-      - name: Build Docker Image
-        run: docker build  -t bankapp .
+    # verify jar exists
+    - name: Verify jar
+      run: |
+        echo "Current directory:"
+        pwd
+        echo "Files:"
+        ls -la
+        echo "App folder:"
+        ls -la app
 
-      - name: Login to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+    # build docker image
+    - name: Build Docker Image
+      run: docker build -t bankapp .
 
-      - name: Push image
-        run: |
-          docker tag bankapp Amanrautdocker1/bankapp:latest
-          docker push Amanrautdocker1/bankapp:latest
+    # login dockerhub
+    - name: Login to DockerHub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+    # tag + push
+    - name: Push image
+      run: |
+        docker tag bankapp Amanrautdocker1/bankapp:latest
+        docker push Amanrautdocker1/bankapp:latest
+
 
   deploy:
-    runs-on: ubuntu-latest
-    needs: docker
-    steps:
-      - uses: actions/checkout@v4
+  runs-on: ubuntu-latest
+  needs: docker
 
-      - name: Deploy to Kubernetes
-        run: kubectl apply -f deployment.yaml
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: Set kubeconfig
+      run: |
+        mkdir -p $HOME/.kube
+        echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+    - name: Deploy to Kubernetes
+      run: kubectl apply -f deployment.yaml
+
+    - name: Verify deployment
+      run: |
+        kubectl get pods
+        kubectl get svc
