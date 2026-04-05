@@ -121,8 +121,8 @@ jobs:
     # tag + push
       - name: Push image
         run: |
-          docker tag bankapp Amanrautdocker1/bankapp:latest
-          docker push Amanrautdocker1/bankapp:latest
+          docker tag bankapp amanrautdocker1/bankapp:latest
+          docker push amanrautdocker1/bankapp:latest
 
 
   deploy:
